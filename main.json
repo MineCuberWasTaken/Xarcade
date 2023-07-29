@@ -1,8 +1,10 @@
 {
-  "usernames": {
-    "aayr": {
-      "id": 501245
-      "flair": "nugget god"
-    }
-  }
+   "xarcade":{
+      "usernames":{
+         "aayr":{
+            "id":501245,
+            "flair":"nugget god"
+         }
+      }
+   }
 }
