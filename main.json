@@ -2,7 +2,8 @@
    "usernames":{
       "aayr":{
          "id":501245,
-         "flair":"nugget god"
+         "flair":"nugget god",
+         "border":"#ff0000"
       },
       "aidan0626":{
          "id":519740,
