@@ -71,7 +71,6 @@
     }
     AoPS.Community.Views.PostingEnviron.prototype.applyBbCode = (function () {
       return function (button) {
-        console.log(button);
         var wrap_start, scroll_loc, wrap_end, shouldIndividual;
 
         scroll_loc = this.$post_box.scrollTop();
@@ -137,10 +136,8 @@
           }
           this.$post_box.val(new_string);
           this.$post_box.focus();
-          this.$post_box[0].setSelectionRange(
-            sel_start + wrap_start.length,
-            sel_end + wrap_start.length
-          );
+          this.$post_box[0].setSelectionRange(sel_start, sel_start + 24 * colorsArr.length);
+          console.log(sel_start, sel_end);
         };
       })();
     function hex(c) {
