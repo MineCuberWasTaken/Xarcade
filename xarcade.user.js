@@ -136,7 +136,14 @@
           }
           this.$post_box.val(new_string);
           this.$post_box.focus();
-          this.$post_box[0].setSelectionRange(sel_start, sel_start + 24 * colorsArr.length);
+          if (!shouldIndividual) {
+            this.$post_box[0].setSelectionRange(
+              sel_start + wrap_start.length,
+              sel_end + wrap_start.length
+            );
+          } else {
+            this.$post_box[0].setSelectionRange(sel_start, sel_start + 24 * colorsArr.length);
+          }
           console.log(sel_start, sel_end);
         };
       })();
