@@ -12,7 +12,7 @@
 (function () {
   "use strict";
 
-  const newGradients = ["#B0600D|#E6B925", "#ff0000|#0000ff"];
+  const newGradients = ["#B0600D|#E6B925", "#0000ff|#00ffff", "#ff0000|#ffb833", "#3da103|#5beb09"];
   let url = "https://chekinnooget.github.io/Xarcade/main.json";
   var xarcade;
   fetch("https://chekinnooget.github.io/Xarcade/main.json")
@@ -21,7 +21,10 @@
 
   let printIt = (data) => {
     const style = document.createElement("style");
-    style.textContent = `.cmty-post-username a{
+    style.textContent = `.cmty-posting-submenu-font-color{
+      height: min-content !important;
+    }
+.cmty-post-username a{
     display: flex;
     flex-direction: column;
 }\n.cmty-post-left a img{
@@ -85,14 +88,17 @@
 
         //this next line is most important.
         if (button.secondary) {
-          if (button.secondary.includes("|")) {
-            shouldIndividual = button.secondary;
-          } else {
-            shouldIndividual = false;
+          if (typeof button.secondary == "string") {
+            if (button.secondary.includes("|")) {
+              shouldIndividual = button.secondary;
+            } else {
+              shouldIndividual = false;
+            }
           }
         } else {
           shouldIndividual = false;
         }
+
         for (let i = 0; i < 1; i++) {
           this.wrapTextareaSelection(wrap_start, wrap_end, shouldIndividual);
         }
