@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Xarcade Helper
 // @namespace    https://github.com/ChekinNooget/Xarcade
-// @version      0.1
+// @version      1.1
 // @description  Various QoL features for Xarcade
 // @author       Chekin Nooget
 // @match        https://artofproblemsolving.com/community/*
@@ -12,7 +12,20 @@
 (function () {
   "use strict";
 
-  const newGradients = ["#B0600D|#E6B925", "#0000ff|#00ffff", "#ff0000|#ffb833", "#3da103|#5beb09"];
+  if (localStorage.getItem("xarcadeGradients") != null) {
+    var newGradients = localStorage.getItem("xarcadeGradients").split(" ")
+    newGradients.pop()
+  } else {
+    localStorage.setItem("xarcadeGradients", "#B0600D|#E6B925 #0000ff|#00ffff #ff0000|#ffb833 #3da103|#5beb09 ")
+  }
+  
+  if (localStorage.getItem("xarcadeToggles") != null) {
+
+  } else {
+    localStorage.setItem("xarcadeToggles", "11")
+  }
+
+
   let url = "https://chekinnooget.github.io/Xarcade/main.json";
   var xarcade;
   fetch("https://chekinnooget.github.io/Xarcade/main.json")
@@ -21,51 +34,154 @@
 
   let printIt = (data) => {
     const style = document.createElement("style");
-    style.textContent = `.cmty-posting-submenu-font-color{
+    
+    style.textContent = `.cmty-post-username a{
+      display: flex;
+      flex-direction: column;
+  }\n
+  .cmty-posting-submenu-font-color{
       height: min-content !important;
+    }`;
+    if (localStorage.getItem("xarcadeToggles")[1] == "1") {
+      style.textContent = style.textContent + `
+      .cmty-post-left a img{
+          width: 86px;
+          height: 86px;
+          border: #808080 3px solid;
+          border-radius: 5px;
+      }\n`
     }
-.cmty-post-username a{
-    display: flex;
-    flex-direction: column;
-}\n.cmty-post-left a img{
-    width: 86px;
-    height: 86px;
-    border: #808080 3px solid;
-    border-radius: 5px;
-}\n`;
     xarcade = data;
-
     for (let i = 0; i < Object.keys(xarcade.usernames).length; i++) {
       //flairs
-      if (xarcade.usernames[Object.keys(xarcade.usernames)[i]].flair) {
-        style.textContent =
-          style.textContent +
-          `.cmty-post-username a[href="/community/user/${
-            xarcade.usernames[Object.keys(xarcade.usernames)[i]].id
-          }"]::after{
+      if (localStorage.getItem("xarcadeToggles")[0] == "1") {
+        if (xarcade.usernames[Object.keys(xarcade.usernames)[i]].flair) {
+          style.textContent =
+            style.textContent +
+            `.cmty-post-username a[href="/community/user/${xarcade.usernames[Object.keys(xarcade.usernames)[i]].id
+            }"]::after{
     content: "${xarcade.usernames[Object.keys(xarcade.usernames)[i]].flair}";
     color: gray;
     font-style: italic
 }\n\n`;
+        }
       }
 
       //borders
-      if (xarcade.usernames[Object.keys(xarcade.usernames)[i]].border) {
-        style.textContent =
-          style.textContent +
-          `.cmty-post-left a[href="/community/user/${
-            xarcade.usernames[Object.keys(xarcade.usernames)[i]].id
-          }"] img{
-    border-color: ${
-      xarcade.usernames[Object.keys(xarcade.usernames)[i]].border
-    };
+      if (localStorage.getItem("xarcadeToggles")[1] == "1") {
+        if (xarcade.usernames[Object.keys(xarcade.usernames)[i]].border) {
+          style.textContent =
+            style.textContent +
+            `.cmty-post-left a[href="/community/user/${xarcade.usernames[Object.keys(xarcade.usernames)[i]].id
+            }"] img{
+    border-color: ${xarcade.usernames[Object.keys(xarcade.usernames)[i]].border
+            };
 }\n\n`;
+        }
       }
     }
     document.head.appendChild(style);
   };
 
   window.onload = function () {
+    AoPS.Community.Lang["cat-cell-mark-read"] = "Xarcade Helper Settings"
+    AoPS.Community.Lang["cat-cell-mark-read-title"] = "Change settings in the Xarcade Helper userscript"
+    AoPS.Community.Views.CategoryCell.prototype.onClickMarkAllRead = function(){
+      return function () {
+        var xarcadeSettingsDiv = document.createElement("div")
+        xarcadeSettingsDiv.textContent = ``
+        
+        //gradients
+
+        var mainColor = ["#a90008"]
+        var secondColor = ["#ffe4e1"]
+        if (localStorage.getItem("xarcadeGradients") != null) {
+          var temp = localStorage.getItem("xarcadeGradients").trim().split(" ")
+          for (let i = 0; i < temp.length; i++) {
+            mainColor[i] = temp[i].split("|")[0]
+            secondColor[i] = temp[i].split("|")[1]
+          }
+        }
+        const pickerDiv = `<div class='picker-group'>
+            <input type='color' class='main-color'>
+            <input type='color' class='second-color'>
+            </div>`
+        const sideButtons = `<button class='delete-color'>-</button>
+        <button class='add-color'>+</button>
+        <button class='save-color'>Save</button>`
+        var tempToggleArr = []
+        for (let i = 0; i < localStorage.getItem("xarcadeToggles").length; i++) {
+          if (localStorage.getItem("xarcadeToggles")[i] == "1") {
+            tempToggleArr[i] = " checked"
+          } else {
+            tempToggleArr[i] = ""
+          }
+        }
+        console.log(tempToggleArr)
+        xarcadeSettingsDiv.innerHTML =
+          `Refresh the page to see changes.<br><br>
+          <div class='xarcade-checkboxes'><input type='checkbox' class='flair-checkbox xarcade-checkbox'${tempToggleArr[0]}> Enable flairs<br>
+          <input type='checkbox' class='border-checkbox xarcade-checkbox'${tempToggleArr[1]}> Enable borders</div><br>
+          Add gradients here. For each row, the first color is the first color in the gradient.`
+        
+        for (let i = 0; i < mainColor.length; i++) {
+          var tempDiv = document.createElement("div")
+          tempDiv.innerHTML = pickerDiv
+          tempDiv.querySelector(".main-color").setAttribute("value", mainColor[i])
+          tempDiv.querySelector(".second-color").setAttribute("value", secondColor[i])
+          xarcadeSettingsDiv.innerHTML = xarcadeSettingsDiv.innerHTML + tempDiv.innerHTML
+        }
+        xarcadeSettingsDiv.innerHTML = xarcadeSettingsDiv.innerHTML + sideButtons
+        xarcadeSettingsDiv.querySelector(".delete-color").onclick = deleteColor
+        xarcadeSettingsDiv.querySelector(".add-color").onclick = addColor
+        xarcadeSettingsDiv.querySelector(".save-color").onclick = setColorToStorage
+        alert(xarcadeSettingsDiv)
+        
+        function deleteColor() {
+          var tempDiv = xarcadeSettingsDiv.querySelectorAll(".picker-group")
+          tempDiv[tempDiv.length - 1].remove()
+          mainColor.pop()
+          secondColor.pop()
+        }
+        function addColor() {
+          var tempDiv = document.createElement("div")
+          tempDiv.insertAdjacentHTML("beforeend", pickerDiv)
+          xarcadeSettingsDiv.insertBefore(
+            tempDiv,
+            xarcadeSettingsDiv.childNodes[xarcadeSettingsDiv.childNodes.length - 5]
+          )
+        }
+        function setColorToStorage() {
+          var tempElement = xarcadeSettingsDiv.querySelectorAll(".picker-group")
+          for (let i = 0; i < tempElement.length; i++) {
+            mainColor[i] = tempElement[i].querySelector(".main-color").value
+            secondColor[i] = tempElement[i].querySelector(".second-color").value
+          }
+          var temp = ""
+          for (let i = 0; i < mainColor.length; i++) {
+            temp = temp + mainColor[i] + "|" + secondColor[i] + " "
+          }
+          localStorage.setItem("xarcadeGradients", temp)
+        }
+        //other settings
+        alert(xarcadeSettingsDiv)
+        var tempToggles = document.querySelector(".xarcade-checkboxes").querySelectorAll(".xarcade-checkbox")
+        for (let i = 0; i < tempToggles.length; i++) {
+          tempToggles[i].addEventListener('change', (event) => {
+            var tempTogglesStr = ""
+            for (let i = 0; i < tempToggles.length; i++) {
+              if (tempToggles[i].checked) {
+                tempTogglesStr = tempTogglesStr + "1"
+              } else {
+                tempTogglesStr = tempTogglesStr + "0"
+              }
+            }
+            console.log(tempTogglesStr)
+            localStorage.setItem("xarcadeToggles", tempTogglesStr)
+        })
+        }
+      }
+    }()
     for (let i = 0; i < newGradients.length; i++) {
       AoPS.Community.Constants.bbCode.font_colors.push(newGradients[i]);
     }
