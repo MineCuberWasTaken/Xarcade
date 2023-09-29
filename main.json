@@ -15,7 +15,8 @@
       },
       "lovematch13":{
          "id":411159,
-         "flair":"2 cool 4 skool"
+         "flair":"2 cool 4 skool",
+         "border":"#000000"
       },
       "Kea13":{
          "id":941772,
@@ -25,6 +26,11 @@
       "awesomeming327.":{
          "id":456237,
          "flair":"pro orz ming"
+      },
+      "juicetin.kim": {
+         "id":996858,
+         "flair": "Juice",
+         "border": "#c0ffee"
       }
    }
 }
