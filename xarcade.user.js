@@ -41,13 +41,16 @@
   }\n
   .cmty-posting-submenu-font-color{
       height: min-content !important;
+    }\n
+  .cmty-mark-all-read{
+      display: revert !important;
     }`;
     if (localStorage.getItem("xarcadeToggles")[1] == "1") {
       style.textContent = style.textContent + `
       .cmty-post-left a img{
           width: 86px;
           height: 86px;
-          border: #808080 3px solid;
+          border: transparent 3px solid;
           border-radius: 5px;
       }\n`
     }
