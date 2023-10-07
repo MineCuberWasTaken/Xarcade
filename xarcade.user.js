@@ -39,6 +39,9 @@
       display: flex;
       flex-direction: column;
   }\n
+  .cmty-user-admin.cmty-post-username a {
+  display: contents;
+  }\n
   .cmty-posting-submenu-font-color{
       height: min-content !important;
     }\n
