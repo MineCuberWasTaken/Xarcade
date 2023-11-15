@@ -48,6 +48,11 @@
          "fossasor": {
          "id":408357,
          "flair": "congrats"
+      },
+         "SwordAxe": {
+         "id":1036812,
+         "flair": "find all digits of pi",
+         "border": "#4c4cff"
       }
    }
 }
