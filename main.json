@@ -51,8 +51,13 @@
       },
          "SwordAxe": {
          "id":1036812,
-         "flair": "find all digits of pi",
+         "flair": "find all pi digits",
          "border": "#4c4cff"
+      },
+         "adrastea": {
+         "id":777330,
+         "flair": "too good",
+         "border": "#808080"
       }
    }
 }
