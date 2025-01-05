@@ -26,9 +26,9 @@
   }
 
 
-  let url = "https://github.com/MineCuberWasTaken/Xarcade/blob/main/main.json";
+  let url = "https://minecuberwastaken.github.io/Xarcade/main.json";
   var xarcade;
-  fetch("https://github.com/MineCuberWasTaken/Xarcade/blob/main/main.json")
+  fetch("https://minecuberwastaken.github.io/Xarcade/main.json")
     .then((jsonData) => jsonData.json())
     .then((data) => printIt(data));
 
