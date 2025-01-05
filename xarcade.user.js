@@ -26,9 +26,9 @@
   }
 
 
-  let url = "https://chekinnooget.github.io/Xarcade/main.json";
+  let url = "https://github.com/MineCuberWasTaken/Xarcade/blob/main/main.json";
   var xarcade;
-  fetch("https://chekinnooget.github.io/Xarcade/main.json")
+  fetch("https://github.com/MineCuberWasTaken/Xarcade/blob/main/main.json")
     .then((jsonData) => jsonData.json())
     .then((data) => printIt(data));
 
